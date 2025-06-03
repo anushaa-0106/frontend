@@ -1,0 +1,54 @@
+def add(x, y):
+    return x + y  # Return the sum of x and y
+
+def subtract(x, y):
+    return x - y  # Return the difference of x and y
+
+def multiply(x, y):
+    return x * y  # Return the product of x and y
+
+def divide(x, y):
+    if y == 0:  # Check if the divisor is zero
+        return "Error! Division by zero."  # Return error message if dividing by zero
+    else:
+        return x / y  # Otherwise, return the quotient
+
+def calculator():
+    print("Simple Calculator")  # Display title
+    print("Select operation:")  # Prompt user to select operation
+    print("1. Add")
+    print("2. Subtract")
+    print("3. Multiply")
+    print("4. Divide")
+
+    while True:  # Infinite loop to keep calculator running until user decides to exit
+        choice = input("Enter choice (1/2/3/4): ")  # Take operation choice from user
+
+        if choice in ('1', '2', '3', '4'):  # Check if choice is valid
+            try:
+                num1 = float(input("Enter first number: "))  # Get first number as float
+                num2 = float(input("Enter second number: "))  # Get second number as float
+            except ValueError:
+                print("Invalid input. Please enter a numeric value.")  # Handle non-numeric input
+                continue  # Restart loop to ask again
+
+            if choice == '1':
+                print(f"{num1} + {num2} = {add(num1, num2)}")  # Perform addition and print result
+            elif choice == '2':
+                print(f"{num1} - {num2} = {subtract(num1, num2)}")  # Perform subtraction and print result
+            elif choice == '3':
+                print(f"{num1} * {num2} = {multiply(num1, num2)}")  # Perform multiplication and print result
+            elif choice == '4':
+                result = divide(num1, num2)  # Perform division
+                print(f"{num1} / {num2} = {result}")  # Print result or error message
+
+            # Ask if the user wants to continue or exit
+            next_calculation = input("Do you want to perform another calculation? (yes/no): ")
+            if next_calculation.lower() != 'yes':  # If user types anything other than 'yes'
+                print("Goodbye!")  # Say goodbye
+                break  # Exit the loop and end program
+        else:
+            print("Invalid choice. Please select 1, 2, 3, or 4.")  # Handle invalid operation input
+
+if _name_ == "_main_":
+    calculator()  # Run the calculator function if this script is executed directly
