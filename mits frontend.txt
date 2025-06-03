@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+ 
+  <link rel="icon" href="https://lh3.googleusercontent.com/a-/ALV-UjWCtL3Rh5hwiwBFawwa694i1z9U1WRcqp_Uj2zjKdBQTY99uHw=s120-p-k-rw-no" type="image/png" />
+
+</head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MITS </title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    /* Sidebar collapsed width */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background-color: white;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      padding-top: 4rem;
+      transition: width 0.3s ease;
+      width: 3.5rem; /* collapsed width */
+      overflow-x: hidden;
+      z-index: 50;
+    }
+    #sidebar.expanded {
+      width: 16rem; /* expanded width */
+      overflow-x: visible;
+    }
+
+    /* Arrow toggle button */
+    #sidebarToggle {
+      position: fixed;
+      top: 1rem;
+      left: 0;
+      background-color: #2563eb; /* blue-600 */
+      border-radius: 0 0.375rem 0.375rem 0;
+      width: 3.5rem;
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 60;
+      color: white;
+      border: none;
+      outline: none;
+      transition: background-color 0.3s ease;
+    }
+    #sidebarToggle:focus {
+      outline-offset: 2px;
+      outline: 2px solid #93c5fd; /* blue-300 */
+    }
+    #sidebarToggle:hover {
+      background-color: #1e40af; /* blue-800 */
+    }
+
+    /* Sidebar menu styles */
+    #sidebar nav ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    #sidebar nav ul li {
+      padding: 0.75rem 1rem;
+    }
+    #sidebar nav ul li a {
+      display: flex;
+      align-items: center;
+      color: #374151; /* gray-700 */
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    #sidebar nav ul li a:hover,
+    #sidebar nav ul li a:focus {
+      color: #2563eb; /* blue-600 */
+      outline: none;
+    }
+    /* Hide text when collapsed */
+    #sidebar:not(.expanded) nav ul li a span.text-label {
+      display: none;
+    }
+
+    /* Icons for menu items */
+    .menu-icon {
+      margin-right: 0.75rem;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      width: 1.5rem;
+      text-align: center;
+    }
+
+    /* Main content shift when expanded */
+    #mainContent {
+      transition: margin-left 0.3s ease;
+      margin-left: 3.5rem; /* collapsed sidebar width */
+      padding: 1rem;
+    }
+    #sidebar.expanded ~ #mainContent {
+      margin-left: 16rem; /* expanded sidebar width */
+    }
+
+    /* Sticky Apply Banner */
+    #stickyBanner {
+      position: fixed;
+      top: 1rem;
+      left: 3.75rem; /* just right of collapsed sidebar */
+      z-index: 40;
+      background-color: #2563eb;
+      color: white;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.15);
+      cursor: pointer;
+      display: none;
+      transition: left 0.3s ease;
+    }
+    #sidebar.expanded ~ #stickyBanner {
+      left: 16.25rem; /* right of expanded sidebar */
+    }
+    #stickyBanner.visible {
+      display: block;
+    }
+
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Sidebar toggle button -->
+  <button id="sidebarToggle" aria-label="Toggle sidebar navigation" aria-expanded="false" aria-controls="sidebar">
+    <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" aria-label="Sidebar navigation">
+    <nav>
+      <ul>
+        <li>
+          <a href="#internship" tabindex="0">
+            <span class="menu-icon">🎓</span>
+            <span class="text-label">Internship Application</span>
+          </a>
+        </li>
+        <li>
+          <a href="#offer-letter" tabindex="0">
+            <span class="menu-icon">📄</span>
+            <span class="text-label">Offer Letter Generation</span>
+          </a>
+        </li>
+        <li>
+          <a href="#certificate-verification" tabindex="0">
+            <span class="menu-icon">✔️</span>
+            <span class="text-label">Certificate Verification</span>
+          </a>
+        </li>
+        <li>
+          <a href="#team-join" tabindex="0">
+            <span class="menu-icon">👥</span>
+            <span class="text-label">Team Join Form</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact-info" tabindex="0">
+            <span class="menu-icon">📞</span>
+            <span class="text-label">Contact Info</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Sticky Apply for Internship Banner -->
+  <div id="stickyBanner" role="banner" tabindex="0" aria-label="Apply for Internship">
+    <a href="#internship" class="focus:outline-none focus:ring-2 focus:ring-white">Apply for Internship</a>
+  </div>
+
+  <!-- Main content -->
+  <div id="mainContent">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow mb-4 rounded">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <img
+            src="https://lh3.googleusercontent.com/a-/ALV-UjWCtL3Rh5hwiwBFawwa694i1z9U1WRcqp_Uj2zjKdBQTY99uHw=s120-p-k-rw-no"
+            alt="MITS Logo"
+            class="h-10 w-10"
+          />
+          <h1 class="text-2xl font-bold">MITS</h1>
+        </div>
+        <div class="space-x-4 hidden md:flex">
+          <a href="#" class="text-gray-700 hover:text-blue-500">Home</a>
+          <a href="#tutorials" class="text-gray-700 hover:text-blue-500">Tutorials</a>
+          <a href="#projects" class="text-gray-700 hover:text-blue-500">Projects</a>
+          <a href="#about" class="text-gray-700 hover:text-blue-500">About Us</a>
+          <a href="#contact" class="text-gray-700 hover:text-blue-500">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Welcome Banner -->
+    <header class="bg-blue-600 text-white text-center py-20 rounded mb-6">
+      <h2 class="text-4xl font-bold mb-4">Welcome to Micro Information Technology Services (MITS)</h2>
+      <p class="text-lg mb-6">Empowering future technologists through hands-on learning and innovation.</p>
+      <div class="space-x-4">
+        <a href="#tutorials" class="bg-white text-blue-600 font-bold py-2 px-4 rounded">Start Learning</a>
+        <a href="#projects" class="bg-blue-800 text-white font-bold py-2 px-4 rounded">Browse Projects</a>
+      </div>
+    </header>
+
+    <!-- Search Bar -->
+    <section class="max-w-4xl mx-auto mt-10 px-4">
+      <input
+        type="text"
+        placeholder="Search tutorials or projects..."
+        class="w-full p-3 border border-gray-300 rounded-lg"
+      />
+    </section>
+
+    <!-- Featured Tutorials Slider -->
+   <section id="featured-tutorials" class="max-w-6xl mx-auto mt-12 px-4">
+  <h3 class="text-2xl font-semibold mb-4">Featured Tutorials</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Java Basics</h4>
+      <p class="text-gray-600">Learn the fundamentals of Java programming.</p>
+      <a href="https://www.learnjavaonline.org/" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Python for Data Science</h4>
+      <p class="text-gray-600">Dive into Python and explore data analysis.</p>
+      <a href="https://www.kaggle.com/learn/python" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Advanced C++ Concepts</h4>
+      <p class="text-gray-600">Master object-oriented and STL in C++.</p>
+      <a href="https://www.learncpp.com/" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Tutorials Section -->
+<section id="tutorials" class="max-w-6xl mx-auto mt-12 px-4">
+  <h3 class="text-2xl font-semibold mb-4">Tutorials</h3>
+  <div class="mb-4">
+    <label class="mr-2">Filter by difficulty:</label>
+    <select class="border p-2 rounded">
+      <option>All</option>
+      <option>Beginner</option>
+      <option>Intermediate</option>
+      <option>Advanced</option>
+    </select>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Java Basics</h4>
+      <p class="text-gray-600">Learn the fundamentals of Java programming.</p>
+      <p class="text-sm mt-2">Difficulty: Beginner</p>
+      <a href="https://www.learnjavaonline.org/" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Python for Data Science</h4>
+      <p class="text-gray-600">Dive into Python and explore data analysis.</p>
+      <p class="text-sm mt-2">Difficulty: Intermediate</p>
+      <a href="https://www.kaggle.com/learn/python" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Advanced C++ Concepts</h4>
+      <p class="text-gray-600">Master object-oriented and STL in C++.</p>
+      <p class="text-sm mt-2">Difficulty: Advanced</p>
+      <a href="https://www.learncpp.com/" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+
+    <!-- New Tutorials -->
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">React JS Crash Course</h4>
+      <p class="text-gray-600">Get started with React for building interactive UIs.</p>
+      <p class="text-sm mt-2">Difficulty: Intermediate</p>
+      <a href="https://reactjs.org/tutorial/tutorial.html" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Docker Basics</h4>
+      <p class="text-gray-600">Learn how to containerize applications using Docker.</p>
+      <p class="text-sm mt-2">Difficulty: Beginner</p>
+      <a href="https://docker-curriculum.com/" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">Kubernetes for Beginners</h4>
+      <p class="text-gray-600">Understand basics of container orchestration with Kubernetes.</p>
+      <p class="text-sm mt-2">Difficulty: Advanced</p>
+      <a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Start Tutorial</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- Projects Section -->
+<section id="projects" class="max-w-6xl mx-auto mt-12 px-4">
+  <h3 class="text-2xl font-semibold mb-4">Projects</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">FreeCodeCamp Projects</h4>
+      <p class="text-gray-600">Complete hands-on projects covering web development and more.</p>
+      <a href="https://www.freecodecamp.org/learn" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Explore Projects</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">GitHub Awesome Projects</h4>
+      <p class="text-gray-600">Discover curated lists of awesome open-source projects.</p>
+      <a href="https://github.com/sindresorhus/awesome" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Explore Projects</button>
+      </a>
+    </div>
+    <div class="bg-white p-4 shadow rounded">
+      <h4 class="text-xl font-bold">The Odin Project</h4>
+      <p class="text-gray-600">Build real-world full-stack projects with guided curriculum.</p>
+      <a href="https://www.theodinproject.com/projects" target="_blank" rel="noopener noreferrer">
+        <button class="mt-2 bg-blue-600 text-white py-1 px-3 rounded">Explore Projects</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- About Us Section -->
+<section id="about" class="mb-20 max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl font-bold mb-4">About Us</h2>
+  <p class="mb-4">
+    <strong>Overview:</strong><br />
+    We provide project-based internships and hands-on events that help students practice their skills, gain real-world experience, and grow confidently in their technical journey.
+  </p>
+  <p class="mb-2"><strong>Phone:</strong> 7777015050</p>
+  <p class="mb-2"><strong>Industry:</strong> Education</p>
+  <p class="mb-2"><strong>Company size:</strong> 2–10 employees</p>
+  <p class="mb-2"><strong>122 associated members</strong> on LinkedIn have listed Micro Information Technology Services as their current workplace.</p>
+  <p class="mb-2"><strong>Headquarters:</strong> Ambala, Haryana</p>
+  <p class="mb-2"><strong>Founded:</strong> 2025</p>
+<p class="mb-2">
+    <strong>LinkedIn:</strong>
+    <a href="https://www.linkedin.com/company/mitsharyana" target="_blank" class="text-blue-600 underline">
+      Visit our LinkedIn profile
+    </a>
+  </p>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="max-w-6xl mx-auto mt-12 px-4 mb-20">
+<h2 class="text-3xl font-bold mb-4">Contact Info</h2>
+  <p><strong>Phone number:</strong> 7777015050</p>
+  <h3 class="text-2xl font-semibold mb-4">Contact</h3>
+  <div class="bg-white p-6 shadow rounded">
+    <form class="space-y-4">
+      <div>
+        <label for="name" class="block font-medium">Name</label>
+        <input type="text" id="name" class="w-full border border-gray-300 p-2 rounded" placeholder="Your Name" />
+      </div>
+      <div>
+        <label for="email" class="block font-medium">Email</label>
+        <input type="email" id="email" class="w-full border border-gray-300 p-2 rounded" placeholder="Your Email" />
+      </div>
+      <div>
+        <label for="message" class="block font-medium">Message</label>
+        <textarea id="message" rows="4" class="w-full border border-gray-300 p-2 rounded" placeholder="Your Message"></textarea>
+      </div>
+      <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Send Message</button>
+    </form>
+  </div>
+</section>
+
+
+    <!-- Internship Application -->
+    <section id="internship" class="mb-20 max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl font-bold mb-4">Internship Application</h2>
+  <p class="mb-4">
+    Kickstart your tech career with MITS! Our internship program offers hands-on experience, mentorship from industry experts, and real-world projects to build your skills.
+  </p>
+  <ul class="list-disc list-inside mb-4 text-gray-700">
+    <li>Work on live projects in web development, data science, and more.</li>
+    <li>Flexible internship durations tailored to your availability.</li>
+    <li>Receive personalized feedback and professional guidance.</li>
+    <li>Opportunities for full-time employment upon successful completion.</li>
+  </ul>
+  <a href="#team-join" class="inline-block bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
+    Apply Now
+  </a>
+</section>
+
+
+    <!-- Offer Letter Generation -->
+    <section id="offer-letter" class="mb-20 max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl font-bold mb-4">Offer Letter Generation</h2>
+  <p class="mb-4">
+    Once you've successfully completed the internship selection process, MITS provides a formal offer letter outlining your role, duration, and other essential details.
+  </p>
+  <p class="mb-4">
+    Our offer letters are designed to ensure clarity and professionalism, giving you confidence as you begin your journey with us.
+  </p>
+  <ul class="list-disc list-inside text-gray-700 mb-4">
+    <li>Official confirmation of internship details.</li>
+    <li>Clear description of roles and responsibilities.</li>
+    <li>Information about stipend, duration, and reporting guidelines.</li>
+  </ul>
+  <p>If you have any questions about your offer letter, feel free to contact our support team.</p>
+</section>
+
+
+    <!-- Certificate Verification -->
+   <section id="certificate-verification" class="mb-20 max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl font-bold mb-4">Certificate Verification</h2>
+  <p class="mb-4">
+    At MITS, we ensure the authenticity of our internship certificates. Verify your certificate easily to showcase your achievements with confidence.
+  </p>
+  <p class="mb-4">
+    Use our certificate verification portal to confirm the validity of certificates issued by MITS. This helps employers and educational institutions trust your credentials.
+  </p>
+  <a href="#" class="inline-block bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
+    Verify Certificate
+  </a>
+</section>
+<section id="team-join" class="mb-20 max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl font-bold mb-4">Team Join Form</h2>
+  <p class="mb-4">
+    Interested in joining the MITS team? Whether you’re a student, developer, or mentor, we welcome passionate individuals to collaborate and grow with us.
+  </p>
+  <p class="mb-4">
+    Fill out the form below to apply for a role on our team. We value creativity, dedication, and a willingness to learn.
+  </p>
+  <form class="bg-white p-6 rounded shadow-md max-w-lg" action="#" method="post">
+    <div class="mb-4">
+      <label for="name" class="block font-semibold mb-1">Full Name</label>
+      <input id="name" name="name" type="text" required class="w-full border border-gray-300 rounded px-3 py-2" />
+    </div>
+    <div class="mb-4">
+      <label for="email" class="block font-semibold mb-1">Email Address</label>
+      <input id="email" name="email" type="email" required class="w-full border border-gray-300 rounded px-3 py-2" />
+    </div>
+    <div class="mb-4">
+      <label for="role" class="block font-semibold mb-1">Interested Role</label>
+      <select id="role" name="role" required class="w-full border border-gray-300 rounded px-3 py-2">
+        <option value="">Select a role</option>
+        <option>Intern</option>
+        <option>Mentor</option>
+        <option>Developer</option>
+        <option>Designer</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label for="message" class="block font-semibold mb-1">Why do you want to join?</label>
+      <textarea id="message" name="message" rows="4" required class="w-full border border-gray-300 rounded px-3 py-2"></textarea>
+    </div>
+    <button type="submit" class="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700 transition">
+      Submit Application
+    </button>
+  </form>
+</section>
+
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const stickyBanner = document.getElementById("stickyBanner");
+    const toggleIcon = document.getElementById("toggleIcon");
+
+    function toggleSidebar() {
+      sidebar.classList.toggle("expanded");
+      const isExpanded = sidebar.classList.contains("expanded");
+      toggleBtn.setAttribute("aria-expanded", isExpanded);
+
+      // Change arrow direction: right arrow (collapsed), left arrow (expanded)
+      if (isExpanded) {
+        toggleIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />`; // left arrow
+      } else {
+        toggleIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />`; // right arrow
+      }
+    }
+
+    toggleBtn.addEventListener("click", toggleSidebar);
+
+    // Sticky banner shows after scrolling down 150px
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 150) {
+        stickyBanner.classList.add("visible");
+      } else {
+        stickyBanner.classList.remove("visible");
+      }
+    });
+
+    // Smooth scroll behavior for sidebar links
+    document.querySelectorAll("#sidebar nav ul li a, #stickyBanner a").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute("href").substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth" });
+        }
+        // Close sidebar on mobile after clicking a link
+        if (window.innerWidth < 768 && sidebar.classList.contains("expanded")) {
+          toggleSidebar();
+        }
+      });
+    });
+
+    // Keyboard accessibility: toggle sidebar with Enter or Space on toggleBtn
+    toggleBtn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    });
+  </script>
+<footer class="bg-gray-900 text-gray-300 py-10">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between">
+    
+    <!-- Quick Links -->
+    <div class="mb-8 md:mb-0">
+      <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
+      <ul>
+        <li><a href="#internship" class="hover:text-blue-400">Internship Application</a></li>
+        <li><a href="#offer-letter" class="hover:text-blue-400">Offer Letter Generation</a></li>
+        <li><a href="#certificate-verification" class="hover:text-blue-400">Certificate Verification</a></li>
+        <li><a href="#team-join" class="hover:text-blue-400">Team Join Form</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media -->
+    <div class="mb-8 md:mb-0">
+      <h3 class="text-white text-lg font-semibold mb-4">Follow Us</h3>
+      <div class="flex space-x-6">
+        <a href="https://www.facebook.com/MicroInformationTechnologyServices" target="_blank" aria-label="Facebook" class="hover:text-blue-600">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.6 9.8v-6.9h-2v-2.9h2v-2.2c0-2 1.2-3.2 3-3.2.9 0 1.8.2 1.8.2v2h-1c-1 0-1.3.6-1.3 1.3v1.9h2.3l-.4 2.9h-1.9v6.9A10 10 0 0022 12z"/></svg>
+        </a>
+        <a href="https://twitter.com/MITS" target="_blank" aria-label="Twitter" class="hover:text-blue-400">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.98-2.48 9.1 9.1 0 01-2.83 1.08 4.52 4.52 0 00-7.7 4.12A12.82 12.82 0 013 4.67a4.52 4.52 0 001.4 6.03 4.48 4.48 0 01-2.05-.56v.06a4.53 4.53 0 003.62 4.44 4.52 4.52 0 01-2.04.08 4.53 4.53 0 004.22 3.14A9 9 0 013 19.54a12.8 12.8 0 006.92 2"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/company/micro-information-technology-services-mits" target="_blank" aria-label="LinkedIn" class="hover:text-blue-700">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 110 5 2.5 2.5 0 010-5zm.02 7h-3v12h3v-12zm7 0h-2.83v12h2.83v-6.2c0-3.4 4.17-3.67 4.17 0v6.2h2.83v-7.9c0-6.7-7.2-6.45-7.2 0v.2z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div>
+      <h3 class="text-white text-lg font-semibold mb-4">Contact Us</h3>
+      <p>Phone: <a href="tel:7777015050" class="hover:text-blue-400">7777015050</a></p>
+      <p>Email: <a href="mailto:info@mits.com" class="hover:text-blue-400">info@mits.com</a></p>
+      <p>Headquarters: Ambala, Haryana</p>
+      <p>© 2025 Micro Information Technology Services</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
